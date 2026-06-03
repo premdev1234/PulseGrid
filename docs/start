@@ -1,0 +1,2 @@
+docker compose up -d in main folde
+npm run dev in gateway , stream , agentbridge and front end

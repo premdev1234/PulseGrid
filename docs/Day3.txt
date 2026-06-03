@@ -1,0 +1,98 @@
+Day 3
+
+
+| Concept                          | Meaning                                          |
+| -------------------------------- | ------------------------------------------------ |
+| Event-Driven AI                  | AI reacts automatically to infrastructure events |
+| Autonomous Workflows             | system initiates reasoning itself                |
+| Service-to-Service Communication | backend microservices communicate internally     |
+| AI Orchestration                 | coordinating reasoning pipelines                 |
+| Investigation Persistence        | AI outputs become long-term intelligence         |
+
+| Technology   | Purpose                     |
+| ------------ | --------------------------- |
+| axios        | inter-service communication |
+| Express      | orchestration APIs          |
+| PostgreSQL   | investigation persistence   |
+| Redis events | anomaly triggers            |
+| Gemini API   | reasoning engine            |
+
+Create Agent Trigger Service
+    Theory
+        Now we create:
+        backend-to-backend AI orchestration.
+            The gateway service will:
+            detect anomaly,
+            invoke agent-bridge automatically,
+            receive investigation,
+            persist intelligence.
+    This is:
+    distributed autonomous reasoning.
+
+IMPORTANT THEORY
+    This is:
+    service-to-service orchestration.
+        Instead of:
+            Frontend → Gemini
+        we now have:
+            Gateway Service
+                ↓
+            Agent Bridge
+                ↓
+            Gemini
+
+Service Discovery
+There are TWO common networking modes:
+| Mode                      | Hostname     |
+| ------------------------- | ------------ |
+| Local development         | localhost    |
+| Docker Compose/Kubernetes | service-name |
+
+MCP Memory + Contextual AI
+Theory
+
+Currently your AI agent is:
+
+stateless.
+
+Meaning:
+
+each investigation is isolated,
+Gemini forgets prior anomalies,
+no long-term contextual reasoning exists.
+
+But true agents require:
+
+memory.
+
+Memory enables:
+
+pattern recognition,
+historical comparison,
+recurring anomaly detection,
+contextual reasoning,
+investigation continuity.
+
+This block introduces:
+
+persistent cognitive memory.
+
+| Concept             | Meaning                             |
+| ------------------- | ----------------------------------- |
+| MCP                 | standardized memory/tool interface  |
+| Contextual AI       | reasoning using historical memory   |
+| Long-Term Memory    | persistent investigation storage    |
+| Retrieval Grounding | fetching prior context              |
+| Agent State         | maintaining intelligence continuity |
+
+Core Multi-Agent Concepts
+| Agent                  | Responsibility               |
+| ---------------------- | ---------------------------- |
+| Risk Agent             | risk severity assessment     |
+| Volatility Agent       | volatility interpretation    |
+| Market Sentiment Agent | macro interpretation         |
+| Orchestrator Agent     | combines outputs             |
+| Memory Agent           | retrieves historical context |
+
+This creates:
+    collaborative AI cognition.

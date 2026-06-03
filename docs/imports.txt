@@ -1,0 +1,88 @@
+| Package           | Purpose                                                                                                                           |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Express           | Backend web framework for building APIs and servers. Handles routes, requests, responses, and middleware efficiently.             |
+| CORS              | Allows frontend and backend running on different ports/domains to communicate. Prevents browser cross-origin blocking errors.     |
+| dotenv            | Loads secrets/configurations from a `.env` file into `process.env`. Used for API keys, database URLs, ports, etc.                 |
+| Socket.IO         | Enables real-time bidirectional communication using WebSockets. Used for live dashboards, chat, market feeds, and streaming data. |
+| Redis (`redis`)   | Connects your Node app to Redis. Commonly used for caching, pub/sub messaging, queues, and realtime event distribution.           |
+| PostgreSQL (`pg`) | PostgreSQL database driver for Node.js. Lets your backend execute SQL queries and manage persistent structured data.              |
+| Axios             | Makes HTTP requests to external/internal APIs from the backend. Cleaner and more powerful than native fetch for many workflows.   |
+
+
+| Part      | Meaning                                                                        |
+| --------- | ------------------------------------------------------------------------------ |
+| `-D`      | Short form of `--save-dev`; installs package as a development dependency only. |
+| `nodemon` | Tool that automatically restarts the Node server whenever source files change. |
+
+Q. What is an Express server ?
+A. An Express server is a backend application built using Express.js that handles HTTP requests and responses.
+   It listens on a port and exposes API routes like /users or /prices.
+   Frontend applications send requests to the Express server for data or actions.
+   The server can connect to databases, Redis, external APIs, or websocket systems.
+   In your project, the gateway service is essentially an Express server coordinating realtime communication.
+
+| Import    | Purpose                           |
+| --------- | --------------------------------- |
+| `express` | Creates backend API server        |
+| `cors`    | Allows frontend to access backend |
+| `http`    | Native Node HTTP server           |
+| `Server`  | Socket.IO websocket server        |
+
+What is socket?
+Represents one connected client.
+Each browser/tab gets unique socket.
+
+What is a REST API?
+A REST API is an HTTP-based interface that allows clients and servers to communicate using standard methods like GET, POST, PUT, and DELETE.
+It exposes endpoints (URLs) through which frontend apps can request or send data to the backend.
+They are ideal for operations like authentication, fetching market data, storing user settings, or querying databases.
+REST APIs are commonly used for non-realtime tasks, while WebSockets/Socket.IO are used for live streaming updates.
+
+Why This Setup
+Redis
+    Acts as:
+        event bus,
+        pub/sub broker,
+        streaming backbone.
+PostgreSQL
+    Stores:
+        market history,
+        anomalies,
+        metrics,
+        investigations metadata.
+
+| Feature               | GET                   | POST                     |
+| --------------------- | --------------------- | ------------------------ |
+| Purpose               | Fetch data            | Send data                |
+| Changes server state? | Ideally no            | Usually yes              |
+| Data location         | URL query parameters  | Request body             |
+| Visible in URL?       | Yes                   | No                       |
+| Cached by browser?    | Often yes             | Usually no               |
+| Bookmarkable?         | Yes                   | No                       |
+| Length limit          | Limited by URL length | Much larger              |
+| Safe/Idempotent       | Safe + idempotent     | Not necessarily          |
+| Typical use           | Read operations       | Create/submit operations |
+
+| Method    | What it does                                                 | How it is called                   |
+| --------- | ------------------------------------------------------------ | ---------------------------------- |
+| `GET`     | Retrieves/fetches data from the server without modifying it. | `GET /users/1`                     |
+| `POST`    | Sends data to the server, usually to create a new resource.  | `POST /users` with body data       |
+| `PUT`     | Replaces an existing resource completely with new data.      | `PUT /users/1` with updated body   |
+| `PATCH`   | Updates only specific fields of an existing resource.        | `PATCH /users/1` with partial body |
+| `DELETE`  | Removes a resource from the server.                          | `DELETE /users/1`                  |
+| `HEAD`    | Same as GET but returns only headers, not the body.          | `HEAD /users/1`                    |
+| `OPTIONS` | Returns supported HTTP methods and server capabilities.      | `OPTIONS /users`                   |
+| `CONNECT` | Establishes a tunnel connection, mainly for HTTPS proxies.   | `CONNECT example.com:443`          |
+| `TRACE`   | Echoes the received request for debugging purposes.          | `TRACE /users`                     |
+
+
+                Source Manager
+              ┌──────┴──────┐
+              │             │
+        Simulator      Binance (later)
+              │             │
+              └────Normalization────┘
+                        │
+                   Redis Pub/Sub
+                        │
+                    PulseGrid

@@ -1,0 +1,13 @@
+{
+  "name": "gateway-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev" : "nodemon src/index.js"
+  },
+  "keywords": [],
+  "author": "Prem Dev",
+  "license": "ISC",
+  "type": "commonjs"
+}

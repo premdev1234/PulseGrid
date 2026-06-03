@@ -1,0 +1,315 @@
+A **Zustand store** is a lightweight global state container for React applications, created using the Zustand library.
+It stores shared application state (like authentication, theme, cart data, websocket state, UI flags, etc.) outside React components so multiple components can access and update the same data efficiently.
+A store is typically created using `create()` and contains **state variables + actions/functions** together in a centralized reactive object.
+Unlike Redux, Zustand avoids reducers, boilerplate, and providers, while still supporting advanced features like middleware, persistence, selectors, subscriptions, and TypeScript typing.
+It is heavily used in modern React/Next.js apps for scalable frontend state management, especially in dashboards, realtime systems, trading UIs, multiplayer apps, and complex async workflows.
+
+A middleware is a function that runs between an action/request and the final logic execution, allowing you to intercept, modify, validate, log, or extend behavior.
+In frontend/backend systems, middleware is commonly used for authentication, logging, error handling, API interception, persistence, analytics, rate limiting, and request transformation.
+In Zustand, middleware enhances stores with features like localStorage persistence, devtools integration, immutable updates, subscriptions, and async debugging without changing core store logic.
+
+# Market Store Documentation
+
+## Purpose
+
+The market store maintains realtime quote data for all tracked financial instruments.
+
+It acts as a centralized in-memory state container for websocket-driven market updates.
+
+---
+
+# Technologies Used
+
+* Zustand
+* TypeScript
+* React
+
+---
+
+# Store Structure
+
+```ts
+interface Quote {
+    symbol: string
+    price: number
+    volume: number
+    timestamp: number
+    source: string
+}
+```
+
+---
+
+# State Shape
+
+```ts
+quotes: Record<string, Quote>
+```
+
+Quotes are indexed by symbol for O(1) access.
+
+Example:
+
+```ts
+{
+   AAPL: {...},
+   TSLA: {...},
+   BTCUSDT: {...}
+}
+```
+
+---
+
+# Why Record<string, Quote> Was Chosen
+
+Using a Record/map structure avoids linear array searches.
+
+Efficient lookup:
+
+```ts
+quotes["AAPL"]
+```
+
+instead of:
+
+```ts
+quotes.find(...)
+```
+
+This design is optimized for realtime systems.
+
+---
+
+# updateQuote()
+
+## Purpose
+
+Updates or inserts the latest quote for a symbol.
+
+## Logic
+
+```ts
+updateQuote: (quote) => set((state) => ({
+    quotes: {
+        ...state.quotes,
+        [quote.symbol]: quote,
+    },
+}))
+```
+
+## Behavior
+
+* Preserves existing symbols
+* Replaces updated symbol
+* Triggers reactive UI updates
+
+---
+
+# Data Flow
+
+```txt
+WebSocket Feed
+      ↓
+updateQuote()
+      ↓
+Zustand Store
+      ↓
+React Components
+      ↓
+UI Rerender
+```
+
+---
+
+# Example Usage
+
+```ts
+const quote = useMarketStore(
+   state => state.quotes["AAPL"]
+)
+```
+
+---
+
+# Common Pitfalls
+
+## 1. Mutating state directly
+
+WRONG:
+
+```ts
+state.quotes["AAPL"] = quote
+```
+
+Always return new objects.
+
+---
+
+## 2. Storing arrays instead of maps
+
+Arrays become inefficient at scale.
+
+---
+
+# Future Improvements
+
+* Add bid/ask spread
+* Add connection status
+* Add exchange latency
+* Add persistence middleware
+* Add batching for high-frequency updates
+
+---
+
+# Architectural Notes
+
+This store is designed similarly to realtime market-data caches used in trading dashboards and telemetry systems.
+
+Primary design goals:
+
+* Fast lookup
+* Minimal rerenders
+* Predictable updates
+* Strong typing
+* Realtime scalability
+
+Q. Why Zustand
+A. Perfect for:
+        i. streaming systems,
+        ii. lightweight real-time updates,
+        iii. websocket-driven state.
+    Much cleaner than Redux for this use case.
+
+A **hook** in React is a special function that lets functional components use React features like state, lifecycle methods, context, refs, and side effects.
+Hooks always start with `use` (like `useState`, `useEffect`, `useMemo`) and allow reusable stateful logic without using class components.
+They work by connecting component execution to React’s internal rendering and state-management system during each render cycle.
+Custom hooks are user-defined hooks that encapsulate reusable logic such as API calls, websocket subscriptions, authentication, or Zustand store access.
+Hooks are fundamental for building scalable React architectures because they separate business logic from UI rendering.
+
+Example:
+
+```tsx
+import { useState } from "react"
+
+function Counter() {
+    const [count, setCount] = useState(0)
+
+    return (
+        <button onClick={() => setCount(count + 1)}>
+            {count}
+        </button>
+    )
+}
+```
+
+Here:
+
+* `useState(0)` creates state
+* `count` = current value
+* `setCount()` updates state
+* component rerenders automatically after updates
+
+useEffect in React is used to run side effects after a component renders.
+
+A side effect means anything that interacts with the outside world or performs work beyond returning UI, such as:
+
+API calls
+websocket subscriptions
+timers
+event listeners
+DOM manipulation
+localStorage access
+
+| Layer            | Responsibility       |
+| ---------------- | -------------------- |
+| Binance Provider | ingest market data   |
+| Redis Publisher  | message distribution |
+| Socket Gateway   | client broadcasting  |
+| Zustand Store    | frontend state       |
+| React Components | rendering            |
+
+What We Will Build
+            Live Stream
+                ↓
+            Redis
+                ↓
+            Gateway Service
+                ↓
+            PostgreSQL Persistence
+                ↓
+            Historical Query APIs
+
+await in JavaScript is used to pause an async function until a Promise finishes.
+It allows asynchronous code (like database queries, API calls, websocket operations, file reads) to be written in a synchronous-looking style.
+
+Analytics Architecture
+    We will create:
+        rolling volatility,
+        sudden jump detection,
+        abnormal volume detection,
+        anomaly severity scoring.
+
+Detection Types 
+    | Detection        | Logic               |
+    | ---------------- | ------------------- |
+    | price spike      | sudden % movement   |
+    | flash crash      | rapid downward move |
+    | abnormal volume  | unusual volume      |
+    | volatility surge | unstable movement   |
+
+
+| Concept              | Meaning                                   |
+| -------------------- | ----------------------------------------- |
+| Agentic AI           | AI systems that autonomously plan and act |
+| Tool Calling         | LLM invokes APIs/functions                |
+| Event-Driven AI      | AI reacts to live infrastructure events   |
+| Contextual Reasoning | AI uses historical + live context         |
+| MCP                  | standardized memory/tool integration      |
+
+| Technology                                                                                           | Purpose                         |
+| ---------------------------------------------------------------------------------------------------- | ------------------------------- |
+| [Google Cloud Agent Builder](https://cloud.google.com/products/agent-builder?utm_source=chatgpt.com) | orchestration layer             |
+| [Google Gemini API](https://ai.google.dev?utm_source=chatgpt.com)                                    | reasoning engine                |
+| Node.js                                                                                              | event backend                   |
+| Redis Pub/Sub                                                                                        | anomaly event distribution      |
+| PostgreSQL                                                                                           | historical grounding            |
+| MongoDB MCP                                                                                          | persistent agent memory (later) |
+
+Architectural Upgrade
+    Before:
+        Market Feed
+            ↓
+        Analytics
+            ↓
+        Frontend
+    After:
+        Market Feed
+            ↓
+        Analytics
+            ↓
+        Anomaly Event
+            ↓
+        AI Investigation Agent
+            ↓
+        Generated Intelligence Report
+            ↓
+        Frontend + MCP Memory
+
+Gemini reasoning integration
+    | Concept            | Meaning                                |
+    | ------------------ | -------------------------------------- |
+    | Prompt Engineering | structuring LLM reasoning              |
+    | Context Injection  | feeding live anomaly data              |
+    | AI Investigation   | generating market explanations         |
+    | Agent Reasoning    | interpreting events autonomously       |
+    | Structured Output  | converting AI into usable intelligence |
+
+Create Investigation Route
+Theory
+    The agent service needs:
+        externally callable workflows.
+    Routes become:
+        agent entry points,
+        orchestration triggers,
+        investigation APIs.
+
