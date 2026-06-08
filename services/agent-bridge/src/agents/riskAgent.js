@@ -1,44 +1,31 @@
-const axios = require("axios")
+const { generateAnalysis, } = require("../services/geminiClient")
 
-const MODEL_NAME = "gemini-3.5-flash"
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${process.env.GEMINI_API_KEY}`
-
-async function analyzeRisk( anomaly, historicalContext) {
+async function analyzeRisk(anomaly, investigationContext) {
     const prompt = `
 You are a quantitative risk analyst.
-Analyze this anomaly from a systemic market risk perspective.
-Symbol:${anomaly.symbol}
-Type:${anomaly.type}
-Severity:${anomaly.severity}
-Percent Change:${anomaly.percentChange}
-Historical Context:
-${historicalContext}
-Focus on:
-- liquidation risk,
-- volatility escalation,
-- systemic instability,
-- risk severity.
+Analyze the anomaly from a systemic market risk perspective.
+
+Current anomaly:
+${JSON.stringify(anomaly, null, 2)}
+
+Investigation context:
+${investigationContext}
+
+Rules:
+- Ground every claim in the current anomaly or the provided historical context.
+- If evidence is missing, say what is missing instead of inventing a cause.
+- Clearly mark uncertainty.
+- Do not recommend trades or destructive actions.
+
+Return concise bullets for:
+- Risk severity
+- Liquidation or contagion risk
+- Evidence used
+- Uncertainty
+- Recommended monitoring action
 `
     try {
-        const response =
-            await axios.post(
-                GEMINI_URL,
-                {
-                    contents: [
-                        {
-                            parts: [
-                                {
-                                    text: prompt,
-                                },
-                            ],
-                        },
-                    ],
-                }
-            )
-        return response.data
-            .candidates[0]
-            .content.parts[0]
-            .text
+        return await generateAnalysis(prompt)
     } catch (err) {
         console.error(
             "Risk agent failed:",

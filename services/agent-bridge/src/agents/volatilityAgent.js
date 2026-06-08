@@ -1,41 +1,32 @@
-const axios = require("axios")
+const { generateAnalysis, } = require("../services/geminiClient")
 
-const MODEL_NAME = "gemini-3.5-flash"
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${process.env.GEMINI_API_KEY}`
-
-async function analyzeVolatility(anomaly, historicalContext
-) {
+async function analyzeVolatility(anomaly, investigationContext) {
     const prompt = `
 You are a volatility strategist.
 Analyze this anomaly from a market volatility perspective.
-Symbol:${anomaly.symbol}
-Type:${anomaly.type}
-Severity:${anomaly.severity}
-Percent Change:${anomaly.percentChange}
-Historical Context:${historicalContext}
-Focus on:
-- volatility expansion,
-- momentum behavior,
-- market regime,
-- directional strength.
+
+Current anomaly:
+${JSON.stringify(anomaly, null, 2)}
+
+Investigation context:
+${investigationContext}
+
+Rules:
+- Ground every claim in the current anomaly or historical context.
+- Distinguish observed movement from likely explanation.
+- Mark uncertainty when data is incomplete.
+- Do not recommend trades or destructive actions.
+
+Return concise bullets for:
+- Volatility expansion
+- Momentum behavior
+- Market regime signal
+- Evidence used
+- Uncertainty
+- Recommended monitoring action
 `
     try {
-        const response =
-            await axios.post(
-                GEMINI_URL,
-                {
-                    contents: [
-                        {
-                            parts: [
-                                {
-                                    text: prompt,
-                                },
-                            ],
-                        },
-                    ],
-                }
-            )
-        return response.data.candidates[0].content.parts[0].text
+        return await generateAnalysis(prompt)
     } catch (err) {
         console.error(
             "Volatility agent failed:",

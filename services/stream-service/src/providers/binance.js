@@ -2,7 +2,7 @@ const WebSocket = require("ws")
 
 const { publishQuote,} = require("../publishers/redisPublisher")
 
-const streams = ["btcusdt@trade","ethusdt@trade","solusdt@trade",]
+const streams = ["btcusdt@trade","ethusdt@trade","solusdt@trade","aapl@trade","googl@trade","msft@trade"]
 
 function startBinanceFeed() {
     const wsUrl = `wss://stream.binance.com:9443/stream?streams=${streams.join("/")}`

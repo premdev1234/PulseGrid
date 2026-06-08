@@ -17,6 +17,35 @@ async function saveInvestigation(data){
         data.severity,
         data.investigation,
     ]
-    await pool.query(query, values)
+    const result = await pool.query(
+        query,
+        values  
+    )
+
+    return result.rows[0]
 }
-module.exports ={saveInvestigation,}
+async function getInvestigationByAnomaly(
+    symbol,
+    anomalyType
+) {
+
+    const query = `
+    SELECT *
+    FROM investigations
+    WHERE symbol = $1
+    AND anomaly_type = $2
+    ORDER BY created_at DESC
+    LIMIT 1
+    `
+
+    const result = await pool.query(
+        query,
+        [symbol, anomalyType]
+    )
+
+    return result.rows[0]
+}
+module.exports ={
+    saveInvestigation,
+    getInvestigationByAnomaly,
+}

@@ -1,16 +1,16 @@
-version: '3.9'
 services:
+
   redis:
     image: redis:7
-    container_name: Puslegrid-redis
-
+    container_name: pulsegrid-redis
+    restart: unless-stopped
     ports:
       - "6379:6379"
 
   postgres:
     image: postgres:15
-
-    container_name: Pulsegrid-postgres
+    container_name: pulsegrid-postgres
+    restart: unless-stopped
 
     environment:
       POSTGRES_USER: Prem
@@ -21,7 +21,50 @@ services:
       - "5432:5432"
 
     volumes:
-      - postgres_data:/var/lib/postgresql/data # creates a persistent storage
+      - postgres_data:/var/lib/postgresql/data
+
+  gateway-service:
+    build:
+      context: ./services/gateway-service
+    
+    env_file:
+      - ./services/gateway-service/.env
+
+    container_name: gateway-service
+    restart: unless-stopped
+
+    ports:
+      - "4000:4000"
+
+    depends_on:
+      - redis
+      - postgres
+
+  stream-service:
+    build:
+      context: ./services/stream-service
+
+    env_file:
+      - ./services/stream-service/.env
+
+    container_name: stream-service
+    restart: unless-stopped
+
+    depends_on:
+      - redis
+
+  agent-bridge:
+    build:
+      context: ./services/agent-bridge
+
+    env_file:
+      - ./services/agent-bridge/.env
+
+    container_name: agent-bridge
+    restart: unless-stopped
+
+    ports:
+      - "5000:5000"
 
 volumes:
   postgres_data:

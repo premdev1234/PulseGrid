@@ -17,12 +17,15 @@ async function connectRedis(){
 }
 
 async function publishQuote(data){
+    console.log(
+        "Publishing to Redis:",
+        data.symbol
+    )
     await redisClient.publish(
         "quotes",
         JSON.stringify(data)
     )
 }
-
 module.exports ={
     connectRedis,
     publishQuote,

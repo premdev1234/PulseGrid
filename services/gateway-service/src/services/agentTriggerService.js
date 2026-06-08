@@ -5,8 +5,8 @@ const axios = require("axios")
 
 async function triggerInvestigation(anomaly){
     try {
-        const response = await  axios.post(
-            "http://localhost:5000/investigate",
+        const response = await axios.post(
+            "http://agent-bridge:5000/investigate",
             anomaly
         )
         return response.data.investigation

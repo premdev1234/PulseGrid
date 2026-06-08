@@ -1,28 +1,45 @@
 const { getMemoryCollection, getRecentInvestigations, } = require("./memoryService")
 const { orchestrateInvestigation, } = require("../agents/orchestratorAgent")
+
+function buildIncidentId(anomaly) {
+    const symbol = anomaly.symbol || "unknown"
+    const timestamp = Date.now()
+
+    return `${symbol}-${timestamp}`
+}
+
 async function investigateAnomaly(anomaly) {
     try {
         const previousInvestigations = await getRecentInvestigations(
             anomaly.symbol
         )
-        const historicalContext = previousInvestigations.map((item) => {
-            return `
-Previous Investigation:${item.investigation}
-`
-        })
-            .join("\n")
-        const investigation = await orchestrateInvestigation(
+        const result = await orchestrateInvestigation(
             anomaly,
-            historicalContext
+            previousInvestigations
         )
         const memoryCollection = getMemoryCollection()
+        const incidentId = buildIncidentId(anomaly)
+
         await memoryCollection.insertOne({
+            incidentId,
+            alert: {
+                symbol: anomaly.symbol,
+                type: anomaly.type,
+                severity: anomaly.severity,
+                status: "investigated",
+                createdAt: new Date(),
+            },
             anomaly,
-            investigation,
-            createdAt:
-                new Date(),
+            investigation: result.investigation,
+            riskAnalysis: result.riskAnalysis,
+            volatilityAnalysis: result.volatilityAnalysis,
+            memoryMatches: result.memoryMatches,
+            dataUsed: result.dataUsed,
+            status: "investigated",
+            createdAt: new Date(),
         })
-        return investigation
+
+        return result.investigation
     } catch (err) {
         console.error(
             "Investigation pipeline failed:"

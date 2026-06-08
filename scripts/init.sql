@@ -13,3 +13,12 @@ CREATE TABLE IF NOT EXISTS anomaly_events (
     severity VARCHAR(20),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS investigations (
+    id SERIAL PRIMARY KEY,
+    symbol VARCHAR(20),
+    anomaly_type VARCHAR(100),
+    severity VARCHAR(20),
+    investigation TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

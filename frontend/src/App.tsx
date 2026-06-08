@@ -1,4 +1,5 @@
 import Dashboard from "./pages/Dashboard"
+import DashboardErrorBoundary from "./components/DashboardErrorBoundary"
 
 export default function App() {
   return (
@@ -6,7 +7,9 @@ export default function App() {
       <h1 className = "text-4xl font-bold">
         DashBoard
       </h1>
-      <Dashboard />
+      <DashboardErrorBoundary>
+        <Dashboard />
+      </DashboardErrorBoundary>
       <p className = "mt-4 text-slate-300">
         Real-time market intelligence platform
       </p>

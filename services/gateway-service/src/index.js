@@ -10,18 +10,28 @@ const publishRoutes = require("./routes/publish")
 const { startSubscriber } = require("./redis/subscriber")
 const { connectPostgres } = require("./db/postgres")
 const quoteRoutes = require("./routes/quotes")
+const investigationRoutes = require("./routes/investigations")
+const demoRoutes = require("./routes/demo")
+const anomalyRoutes = require("./routes/anomalies")
+
 const app = express()
+
 app.use(cors())
 app.use(express.json())
 app.use("/health" , healthRoutes)
 app.use("/publish", publishRoutes)
 app.use("/quotes", quoteRoutes)
+app.use("/investigations", investigationRoutes)
+app.use("/demo", demoRoutes)
+app.use("/anomalies",anomalyRoutes)
+
 const server = http.createServer(app)
 const io = new Server(server , {
     cors : {
         origin : "*" ,
     },
 })
+app.set("io", io)
 app.get("/" , (req , res) => {
     res.json({
         status : "Gateway service running " , 
@@ -29,10 +39,32 @@ app.get("/" , (req , res) => {
 }) // rest api
 initializeSocket(io)
 const PORT = process.env.PORT || 4000
-connectRedis()
-connectPostgres()
-startSubscriber(io)
-server.listen(PORT , () => {
-    console.log(`Gateway service listening on port ${PORT}`)
-}) // starts server ( HTTP + websocket)
+
+async function startServer() {
+    try {
+
+        await connectRedis()
+
+        await connectPostgres()
+
+        await startSubscriber(io)
+
+        server.listen(PORT, () => {
+            console.log(
+                `Gateway service listening on port ${PORT}`
+            )
+        })
+
+    } catch (err) {
+
+        console.error(
+            "Startup failed:",
+            err.message
+        )
+
+        process.exit(1)
+    }
+}
+
+startServer()// starts server ( HTTP + websocket)
 

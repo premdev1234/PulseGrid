@@ -1,12 +1,26 @@
-const express = require("express") // imports express library
+const express = require("express")
 const router = express.Router()
 
-router.get("/" , (req , res) => {
+const {
+    getSystemHealth,
+} = require("../services/healthService")
+
+router.get("/", (req, res) => {
+
     res.json({
-        service: "gateway-service" ,
+        service: "gateway-service",
         status: "healthy",
     })
+
+})
+
+router.get("/deep", async (req, res) => {
+
+    const health =
+        await getSystemHealth()
+
+    res.json(health)
+
 })
 
 module.exports = router
-

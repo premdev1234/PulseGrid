@@ -1,10 +1,7 @@
 const { createClient } = require("redis")
 const { saveQuote } = require("../services/quoteService")
 const { analyzeQuote } = require("../services/analyticsService")
-const { saveAnomaly } = require("../services/anomalyService")
-const { publishAnomaly } = require("./client")
-const { triggerInvestigation } = require("../services/agentTriggerService")
-const { saveInvestigation } = require("../services/investigationService")
+const { processAnomaly } = require("../services/anomalyWorkflowService")
 
 async function startSubscriber(io) {
     const subscriber = createClient({
@@ -27,30 +24,7 @@ async function startSubscriber(io) {
                 "Anomaly detected:",
                 anomaly
             )
-            await saveAnomaly(anomaly)
-            await publishAnomaly(anomaly)
-            const investigation = await triggerInvestigation(anomaly)
-            if (investigation) {
-                console.log(
-                    "AI Investigation:",
-                    investigation
-                )
-                await saveInvestigation({
-                    ...anomaly,
-                    investigation,
-                })
-                io.emit(
-                    "investigation_completed",
-                    {
-                        ...anomaly,
-                        investigation,
-                    }
-                )
-            }
-            io.emit(
-                "anomaly_detected",
-                anomaly
-            )
+            await processAnomaly(anomaly, io)
         }
         io.emit(
             "quote_update",
