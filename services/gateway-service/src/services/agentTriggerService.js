@@ -9,7 +9,7 @@ async function triggerInvestigation(anomaly){
             "http://agent-bridge:5000/investigate",
             anomaly
         )
-        return response.data.investigation
+        return response.data
     } catch (err) {
         console.error(
             "Agent trigger failed:",

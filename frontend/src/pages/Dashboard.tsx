@@ -2,14 +2,18 @@ import Header from "../components/Header"
 import AlertPanel from "../components/AlertPanel"
 import InvestigationPanel from "../components/InvestigationPanel"
 import MarketCharts from "../components/MarketCharts"
-import MarketFeed from "../components/MarketFeed" 
-import useMarketSocket from "../hooks/useMarketSocket" 
+import MarketFeed from "../components/MarketFeed"
+import useMarketSocket from "../hooks/useMarketSocket"
 import { useMarketStore, } from "../store/marketStore"
-import SystemStatus from "../components/SystemStatus"
 import MetricsBar from "../components/MetricsBar"
 import StatusBanner from "../components/StatusBanner"
+import AnomalyHistory from "../components/AnomalyHistory"
+import InvestigationHistory from "../components/InvestigationHistory"
+import InvestigationTimeline from "../components/InvestigationTimeline"
+import MemoryBrowser from "../components/MemoryBrowser"
 
 const API_BASE_URL = "http://localhost:4000"
+
 const symbols = [
   "BTCUSDT",
   "ETHUSDT",
@@ -37,26 +41,44 @@ export default function Dashboard() {
   const selectedSymbol = useMarketStore((state) => state.selectedSymbol)
   const setSelectedSymbol = useMarketStore((state) => state.setSelectedSymbol)
 
+  const addInvestigation = useMarketStore(
+    (state) => state.addInvestigation
+  )
+
+
   async function investigateSelectedSymbol() {
-    await fetch(
-      `${API_BASE_URL}/investigations`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          symbol: selectedSymbol,
-          type: "MANUAL_INVESTIGATION",
-          severity: "MEDIUM",
-          source: "dashboard",
-          metadata: {
-            requestedBy: "dashboard",
+
+    const response =
+      await fetch(
+        `${API_BASE_URL}/investigations`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           },
-        }),
-      }
-    )
+          body: JSON.stringify({
+            symbol: selectedSymbol,
+          }),
+        }
+      )
+
+    const result =
+      await response.json()
+
+    if (result.investigation) {
+
+      addInvestigation({
+        symbol: result.investigation.symbol,
+        type: result.investigation.anomaly_type,
+        severity: result.investigation.severity,
+        timestamp: Date.now(),
+        investigation: result.investigation.investigation,
+        rootCause: result.investigation.rootCause,
+        confidence: result.investigation.confidence,
+      })
+    }
   }
+
 
   async function runDemoScenario(scenario: string) {
     await fetch(
@@ -119,9 +141,22 @@ export default function Dashboard() {
         <MarketFeed />
         <MarketCharts />
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-[360px_1fr]">
-          <AlertPanel />
-          <InvestigationPanel />
+
+          <div>
+            <AlertPanel />
+          </div>
+
+          <div>
+            <InvestigationPanel />
+            <MemoryBrowser symbol={selectedSymbol} />
+          </div>
+
         </div>
+
+        <InvestigationHistory />
+
+        <InvestigationTimeline />
+        <AnomalyHistory />
       </main>
     </div>
   )

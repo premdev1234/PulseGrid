@@ -13,6 +13,8 @@ const quoteRoutes = require("./routes/quotes")
 const investigationRoutes = require("./routes/investigations")
 const demoRoutes = require("./routes/demo")
 const anomalyRoutes = require("./routes/anomalies")
+const metricsRoutes = require("./routes/metrics")
+const memoryRoutes = require("./routes/memory")
 
 const app = express()
 
@@ -24,6 +26,8 @@ app.use("/quotes", quoteRoutes)
 app.use("/investigations", investigationRoutes)
 app.use("/demo", demoRoutes)
 app.use("/anomalies",anomalyRoutes)
+app.use("/metrics",metricsRoutes)
+app.use("/memory",memoryRoutes)
 
 const server = http.createServer(app)
 const io = new Server(server , {

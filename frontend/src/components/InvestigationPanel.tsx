@@ -5,6 +5,9 @@ import {
 
 import { useMarketStore } from "../store/marketStore"
 
+import MemoryBrowser from "./MemoryBrowser"
+
+
 export default function InvestigationPanel() {
 
     const panelRef =
@@ -15,7 +18,14 @@ export default function InvestigationPanel() {
             (state) => state.investigations
         )
 
+    const selectedInvestigation =
+    useMarketStore(
+            (state) =>
+                state.selectedInvestigation
+        )
+
     const latest =
+        selectedInvestigation ||
         investigations[0]
 
     useEffect(() => {
@@ -81,10 +91,34 @@ export default function InvestigationPanel() {
                             </span>
 
                         </div>
-
+                        {latest.rootCause && (
+                            <div
+                                className="
+                                    mt-4
+                                    rounded-lg
+                                    border
+                                    border-emerald-700
+                                    bg-emerald-950/30
+                                    p-4
+                                "
+                            >
+                                <p className="font-semibold text-emerald-300">
+                                    Likely Root Cause
+                                </p>
+                                <p className="mt-2 text-sm">
+                                    {latest.rootCause}
+                                </p>
+                                <p className="mt-2 text-xs text-slate-400">
+                                    Confidence: {latest.confidence}%
+                                </p>
+                            </div>
+                        )}
                         <pre className="mt-4 max-h-96 overflow-auto whitespace-pre-wrap rounded-md bg-slate-950 p-4 text-sm leading-6 text-slate-200">
                             {latest.investigation}
                         </pre>
+                        <MemoryBrowser
+                            symbol={latest.symbol}
+                        />
 
                     </>
                 )}

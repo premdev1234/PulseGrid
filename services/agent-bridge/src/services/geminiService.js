@@ -31,6 +31,8 @@ async function investigateAnomaly(anomaly) {
             },
             anomaly,
             investigation: result.investigation,
+            rootCause: result.rootCause,         
+            confidence: result.confidence,
             riskAnalysis: result.riskAnalysis,
             volatilityAnalysis: result.volatilityAnalysis,
             memoryMatches: result.memoryMatches,
@@ -39,7 +41,7 @@ async function investigateAnomaly(anomaly) {
             createdAt: new Date(),
         })
 
-        return result.investigation
+        return result
     } catch (err) {
         console.error(
             "Investigation pipeline failed:"

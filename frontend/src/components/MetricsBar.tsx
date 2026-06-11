@@ -1,6 +1,20 @@
+import {
+    useEffect,
+    useState,
+} from "react"
+
 import { useMarketStore } from "../store/marketStore"
 
+type Metrics = {
+    alerts: number
+    investigations: number
+    uptime: number
+}
+
 export default function MetricsBar() {
+
+    const [metrics, setMetrics] =
+        useState<Metrics | null>(null)
 
     const alerts =
         useMarketStore(
@@ -12,28 +26,51 @@ export default function MetricsBar() {
             (state) => state.investigations
         )
 
-    const quotes =
-        useMarketStore(
-            (state) => state.quotes
-        )
-
     const criticalAlerts =
         alerts.filter(
             (alert) =>
                 alert.severity === "HIGH"
         ).length
 
-    const history =
-        useMarketStore(
-            (state) => state.history
-        )
-    const throughput = (
-        Object.values(history)
-            .reduce(
-                (sum, arr) => sum + arr.length,
-                0
-            ) / 60
-    ).toFixed(1)
+    useEffect(() => {
+
+        loadMetrics()
+
+        const interval =
+            setInterval(
+                loadMetrics,
+                5000
+            )
+
+        return () =>
+            clearInterval(interval)
+
+    }, [])
+
+    async function loadMetrics() {
+
+        try {
+
+            const response =
+                await fetch(
+                    "http://localhost:4000/metrics"
+                )
+
+            const data =
+                await response.json()
+
+            setMetrics(data)
+
+        } catch (err) {
+
+            console.error(
+                "Metrics load failed",
+                err
+            )
+
+        }
+    }
+
     return (
         <div
             className="
@@ -47,23 +84,37 @@ export default function MetricsBar() {
 
             <MetricCard
                 title="Alerts"
-                value={alerts.length}
+                value={
+                    metrics?.alerts ??
+                    alerts.length
+                }
             />
 
             <MetricCard
                 title="Investigations"
-                value={investigations.length}
+                value={
+                    metrics?.investigations ??
+                    investigations.length
+                }
             />
 
             <MetricCard
-                title="Events/sec"
-                value={throughput}
+                title="Gateway Uptime"
+                value={
+                    metrics
+                        ? `${Math.floor(
+                            metrics.uptime / 60
+                        )}m`
+                        : "--"
+                }
             />
 
             <MetricCard
                 title="Critical"
                 value={criticalAlerts}
-                critical={criticalAlerts > 0}
+                critical={
+                    criticalAlerts > 0
+                }
             />
 
         </div>
@@ -74,13 +125,14 @@ function MetricCard(
     {
         title,
         value,
-        critical = false
+        critical = false,
     }: {
         title: string
         value: number | string
         critical?: boolean
     }
 ) {
+
     return (
         <div
             className={`

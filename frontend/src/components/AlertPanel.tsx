@@ -62,6 +62,12 @@ export default function AlertPanel() {
 
                     investigation:
                         result.investigation.investigation,
+                    
+                    rootCause:
+                        result.investigation.rootCause,
+
+                    confidence:
+                        result.investigation.confidence,
                 })
 
                 toast.success(

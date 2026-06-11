@@ -4,6 +4,7 @@ const cors = require("cors")
 const investigateRoutes = require("./routes/investigate")
 const { connectMemory, } = require("./services/memoryService")
 const healthRoutes = require("./routes/health")
+const memoryRoutes = require("./routes/memory")
 
 const app = express()
 
@@ -11,12 +12,14 @@ app.use(cors())
 app.use(express.json())
 app.use("/health", healthRoutes)
 app.use("/investigate", investigateRoutes)
+app.use("/memory" , memoryRoutes)
 app.get("/", (req, res) => {
     res.json({
         status:
             "PulseGrid Agent Bridge Running",
     })
 })
+
 const PORT = process.env.PORT || 5000
 async function startServer() {
     try {

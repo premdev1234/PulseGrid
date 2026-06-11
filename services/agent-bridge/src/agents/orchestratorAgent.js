@@ -74,7 +74,23 @@ async function orchestrateInvestigation(anomaly, previousInvestigations = []) {
         analyzeVolatility(anomaly, investigationContext),
     ])
 
+    const confidence =
+        previousInvestigations.length >= 3
+            ? 85
+            : previousInvestigations.length >= 1
+                ? 75
+                : 60
+
+    const rootCause =
+        anomaly.type === "PRICE_SPIKE"
+            ? "Rapid directional price movement detected with elevated volatility."
+            : anomaly.type === "MARKET_REVIEW"
+                ? "Routine market review triggered for trend assessment."
+                : "Market behaviour deviated from expected baseline."
+
     return {
+        rootCause,
+        confidence,
         investigation: buildFinalInvestigation(
             anomaly,
             riskAnalysis,
@@ -96,3 +112,4 @@ module.exports = {
     orchestrateInvestigation,
     buildInvestigationContext,
 }
+

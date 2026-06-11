@@ -67,7 +67,7 @@ async function getRecentInvestigations(symbol){
     }
     return fallbackMemory.filter(
         (item) => item.anomaly.symbol === symbol
-    ).slice(-3)
+    ).slice(0,3)
 }
 
 async function searchSimilarIncidents(anomaly) {
