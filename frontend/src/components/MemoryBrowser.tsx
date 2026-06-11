@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { API_BASE_URL } from "../config"
 
 interface MemoryEntry {
     investigation: string
@@ -36,7 +37,7 @@ export default function MemoryBrowser(
 
             const response =
                 await fetch(
-                    `http://localhost:4000/memory/${symbol}`
+                    `http://`${API_BASE_URL}/memory/${symbol}`
                 )
 
             const data =
