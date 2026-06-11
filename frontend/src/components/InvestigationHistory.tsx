@@ -7,6 +7,8 @@ import {
     useMarketStore,
 } from "../store/marketStore"
 
+import { API_BASE_URL } from "../config"
+
 export default function InvestigationHistory() {
 
     const [loading, setLoading] =
@@ -45,7 +47,7 @@ export default function InvestigationHistory() {
 
             const response =
                 await fetch(
-                    "http://localhost:4000/investigations"
+                    "http://`${API_BASE_URL}/investigations"
                 )
 
             const data =
