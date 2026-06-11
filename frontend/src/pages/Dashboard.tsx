@@ -11,8 +11,8 @@ import AnomalyHistory from "../components/AnomalyHistory"
 import InvestigationHistory from "../components/InvestigationHistory"
 import InvestigationTimeline from "../components/InvestigationTimeline"
 import MemoryBrowser from "../components/MemoryBrowser"
+import { API_BASE_URL } from "../config"
 
-const API_BASE_URL = "http://localhost:4000"
 
 const symbols = [
   "BTCUSDT",
