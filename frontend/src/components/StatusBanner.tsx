@@ -43,7 +43,7 @@ export default function StatusBanner() {
 
             const response =
                 await fetch(
-                    "${API_BASE_URL}/health/deep"
+                    `${API_BASE_URL}/health/deep`
                 )
 
             const data =
