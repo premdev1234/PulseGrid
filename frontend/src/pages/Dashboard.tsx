@@ -4,6 +4,7 @@ import MetricsBar from "../components/MetricsBar"
 import MarketFeed from "../components/MarketFeed"
 import MarketCharts from "../components/MarketCharts"
 import AlertPanel from "../components/AlertPanel"
+import InvestigationPanel from "../components/InvestigationPanel"
 import useMarketSocket from "../hooks/useMarketSocket"
 import { useMarketStore } from "../store/marketStore"
 
@@ -28,6 +29,7 @@ export default function Dashboard() {
 
                 <MarketFeed />
                 <MarketCharts />
+                <InvestigationPanel />
 
                 <div className="grid grid-cols-1 gap-6 xl:grid-cols-[360px_1fr]">
                   <div>
