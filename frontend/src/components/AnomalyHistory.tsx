@@ -4,6 +4,7 @@ import {
 } from "react"
 
 import { useMarketStore } from "../store/marketStore"
+import { API_BASE_URL } from "../config"
 
 interface HistoricalAnomaly {
     id: number
@@ -35,7 +36,7 @@ export default function AnomalyHistory() {
 
             const response =
                 await fetch(
-                    "http://localhost:4000/anomalies"
+                    "http://${API_BASE_URL}/anomalies"
                 )
 
             const data =
@@ -61,7 +62,7 @@ export default function AnomalyHistory() {
 
             const response =
                 await fetch(
-                    `http://localhost:4000/investigations/${id}`,
+                    `http://${API_BASE_URL}/investigations/${id}`,
                     {
                         method: "POST",
                     }
