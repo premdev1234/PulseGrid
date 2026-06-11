@@ -1,18 +1,18 @@
 import Header from "../components/Header"
-import AlertPanel from "../components/AlertPanel"
+import useMarketSocket from "../hooks/useMarketSocket"
+import { useMarketStore, } from "../store/marketStore"
+import StatusBanner from "../components/StatusBanner"
+import MetricsBar from "../components/MetricsBar"
+{/* import AlertPanel from "../components/AlertPanel"
 import InvestigationPanel from "../components/InvestigationPanel"
 import MarketCharts from "../components/MarketCharts"
 import MarketFeed from "../components/MarketFeed"
-import useMarketSocket from "../hooks/useMarketSocket"
-import { useMarketStore, } from "../store/marketStore"
-import MetricsBar from "../components/MetricsBar"
-import StatusBanner from "../components/StatusBanner"
 import AnomalyHistory from "../components/AnomalyHistory"
 import InvestigationHistory from "../components/InvestigationHistory"
 import InvestigationTimeline from "../components/InvestigationTimeline"
 import MemoryBrowser from "../components/MemoryBrowser"
 import { API_BASE_URL } from "../config"
-
+*/}
 
 const symbols = [
   "BTCUSDT",
