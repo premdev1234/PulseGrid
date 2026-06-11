@@ -5,6 +5,7 @@ import MarketFeed from "../components/MarketFeed"
 import MarketCharts from "../components/MarketCharts"
 import AlertPanel from "../components/AlertPanel"
 import InvestigationPanel from "../components/InvestigationPanel"
+import MemoryBrowser from "../components/MemoryBrowser"
 import useMarketSocket from "../hooks/useMarketSocket"
 import { useMarketStore } from "../store/marketStore"
 
@@ -30,6 +31,7 @@ export default function Dashboard() {
                 <MarketFeed />
                 <MarketCharts />
                 <InvestigationPanel />
+                <MemoryBrowser symbol={selectedSymbol} />
 
                 <div className="grid grid-cols-1 gap-6 xl:grid-cols-[360px_1fr]">
                   <div>
