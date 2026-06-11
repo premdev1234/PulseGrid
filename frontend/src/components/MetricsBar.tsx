@@ -54,7 +54,7 @@ export default function MetricsBar() {
 
             const response =
                 await fetch(
-                    "${API_BASE_URL}/metrics"
+                    `${API_BASE_URL}/metrics`
                 )
 
             const data =
