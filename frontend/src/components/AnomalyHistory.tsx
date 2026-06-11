@@ -36,7 +36,7 @@ export default function AnomalyHistory() {
 
             const response =
                 await fetch(
-                    "http://${API_BASE_URL}/anomalies"
+                    "${API_BASE_URL}/anomalies"
                 )
 
             const data =
@@ -62,7 +62,7 @@ export default function AnomalyHistory() {
 
             const response =
                 await fetch(
-                    `http://${API_BASE_URL}/investigations/${id}`,
+                    `${API_BASE_URL}/investigations/${id}`,
                     {
                         method: "POST",
                     }
