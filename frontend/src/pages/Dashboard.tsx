@@ -2,7 +2,7 @@ import Header from "../components/Header"
 import StatusBanner from "../components/StatusBanner"
 import MetricsBar from "../components/MetricsBar"
 import MarketFeed from "../components/MarketFeed"
-
+import MarketCharts from "../components/MarketCharts"
 import useMarketSocket from "../hooks/useMarketSocket"
 import { useMarketStore } from "../store/marketStore"
 
@@ -26,6 +26,7 @@ export default function Dashboard() {
                 <MetricsBar />
 
                 <MarketFeed />
+                <MarketCharts />
 
                 <div className="mt-8">
                     <h1 className="text-3xl font-bold">
