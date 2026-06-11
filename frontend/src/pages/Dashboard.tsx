@@ -3,6 +3,7 @@ import StatusBanner from "../components/StatusBanner"
 import MetricsBar from "../components/MetricsBar"
 import MarketFeed from "../components/MarketFeed"
 import MarketCharts from "../components/MarketCharts"
+import AlertPanel from "../components/AlertPanel"
 import useMarketSocket from "../hooks/useMarketSocket"
 import { useMarketStore } from "../store/marketStore"
 
@@ -27,6 +28,12 @@ export default function Dashboard() {
 
                 <MarketFeed />
                 <MarketCharts />
+
+                <div className="grid grid-cols-1 gap-6 xl:grid-cols-[360px_1fr]">
+                  <div>
+                    <AlertPanel />
+                  </div>
+                </div>
 
                 <div className="mt-8">
                     <h1 className="text-3xl font-bold">
