@@ -47,7 +47,7 @@ export default function InvestigationHistory() {
 
             const response =
                 await fetch(
-                    "${API_BASE_URL}/investigations"
+                    `${API_BASE_URL}/investigations`
                 )
 
             const data =
