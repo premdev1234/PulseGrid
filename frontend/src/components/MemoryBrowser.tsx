@@ -37,7 +37,7 @@ export default function MemoryBrowser(
 
             const response =
                 await fetch(
-                    `http://`${API_BASE_URL}/memory/${symbol}`
+                    `${API_BASE_URL}/memory/${symbol}`
                 )
 
             const data =
