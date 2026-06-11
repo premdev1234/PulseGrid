@@ -32,7 +32,7 @@ export default function AlertPanel() {
 
             const response =
                 await fetch(
-                    `http://${API_BASE_URL}/investigations/${id}`,
+                    `${API_BASE_URL}/investigations/${id}`,
                     {
                         method: "POST",
                     }
