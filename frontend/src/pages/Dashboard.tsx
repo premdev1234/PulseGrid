@@ -7,9 +7,9 @@ import useMarketSocket from "../hooks/useMarketSocket"
 import { useMarketStore, } from "../store/marketStore"
 import MetricsBar from "../components/MetricsBar"
 import StatusBanner from "../components/StatusBanner"
-import AnomalyHistory from "../components/AnomalyHistory"
+// import AnomalyHistory from "../components/AnomalyHistory"
 import InvestigationHistory from "../components/InvestigationHistory"
-//import InvestigationTimeline from "../components/InvestigationTimeline"
+import InvestigationTimeline from "../components/InvestigationTimeline"
 import MemoryBrowser from "../components/MemoryBrowser"
 import { API_BASE_URL } from "../config"
 
@@ -155,8 +155,8 @@ export default function Dashboard() {
 
         <InvestigationHistory />
 
-        {/*<InvestigationTimeline />*/}
-        <AnomalyHistory />
+        <InvestigationTimeline />
+        {/*<AnomalyHistory />*/}
       </main>
     </div>
   )
