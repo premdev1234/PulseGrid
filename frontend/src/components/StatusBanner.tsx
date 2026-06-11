@@ -6,6 +6,8 @@ import {
     useMarketStore,
 } from "../store/marketStore"
 
+import { API_BASE_URL } from "../config"
+
 export default function StatusBanner() {
 
     const health =
@@ -41,7 +43,7 @@ export default function StatusBanner() {
 
             const response =
                 await fetch(
-                    "http://localhost:4000/health/deep"
+                    "http://`${API_BASE_URL}/health/deep"
                 )
 
             const data =
