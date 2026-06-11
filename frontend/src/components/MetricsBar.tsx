@@ -4,6 +4,7 @@ import {
 } from "react"
 
 import { useMarketStore } from "../store/marketStore"
+import { API_BASE_URL } from "../config"
 
 type Metrics = {
     alerts: number
@@ -53,7 +54,7 @@ export default function MetricsBar() {
 
             const response =
                 await fetch(
-                    "http://localhost:4000/metrics"
+                    "http://${API_BASE_URL}/metrics"
                 )
 
             const data =
