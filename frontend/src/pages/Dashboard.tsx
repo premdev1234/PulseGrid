@@ -7,7 +7,7 @@ import useMarketSocket from "../hooks/useMarketSocket"
 import { useMarketStore, } from "../store/marketStore"
 import MetricsBar from "../components/MetricsBar"
 import StatusBanner from "../components/StatusBanner"
-// import AnomalyHistory from "../components/AnomalyHistory"
+import AnomalyHistory from "../components/AnomalyHistory"
 import InvestigationHistory from "../components/InvestigationHistory"
 import InvestigationTimeline from "../components/InvestigationTimeline"
 import MemoryBrowser from "../components/MemoryBrowser"
@@ -96,7 +96,7 @@ export default function Dashboard() {
         <StatusBanner />
         <MetricsBar />
         {/* <SystemStatus /> */}
-        <div className="flex flex-wrap items-end justify-between gap-4">
+        {/* <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <h2 className="text-2xl font-semibold">
               Market Intelligence Dashboard
@@ -156,7 +156,8 @@ export default function Dashboard() {
         <InvestigationHistory />
 
         <InvestigationTimeline />
-        {/*<AnomalyHistory />*/}
+        <AnomalyHistory /> */}
+      <h1>TEST</h1>
       </main>
     </div>
   )
