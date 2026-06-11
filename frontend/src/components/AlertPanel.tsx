@@ -2,6 +2,7 @@ import { useState } from "react"
 import toast from "react-hot-toast"
 
 import { useMarketStore } from "../store/marketStore"
+import { API_BASE_URL } from "../config"
 
 export default function AlertPanel() {
 
@@ -31,7 +32,7 @@ export default function AlertPanel() {
 
             const response =
                 await fetch(
-                    `http://localhost:4000/investigations/${id}`,
+                    `http://${API_BASE_URL}/investigations/${id}`,
                     {
                         method: "POST",
                     }
